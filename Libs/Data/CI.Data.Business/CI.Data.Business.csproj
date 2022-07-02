@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CI.Commons\CI.Commons.csproj" />
     <ProjectReference Include="..\CI.Data.Model\CI.Data.Entity.csproj" />
   </ItemGroup>
 

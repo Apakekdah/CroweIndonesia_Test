@@ -2,6 +2,7 @@
 using Hero.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Ride;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Security.Claims;
@@ -32,6 +33,27 @@ namespace CI
         {
             var claim = ((ClaimsIdentity)principal.Identity)?.Claims.FirstOrDefault(c => c.Type.Equals(ClaimTypes.Name));
             return claim?.Value;
+        }
+
+        public static ICollection<IEnumerable<T>> Split<T>(this IEnumerable<T> source, int limit)
+        {
+            source.ThrowIfNull("source");
+            ICollection<IEnumerable<T>> cols = new HashSet<IEnumerable<T>>();
+            using (var enumerator = source.GetEnumerator())
+            {
+                while (enumerator.MoveNext())
+                {
+                    cols.Add(Partition(enumerator, limit).ToArray());
+                }
+            }
+            return cols;
+        }
+        private static IEnumerable<T> Partition<T>(IEnumerator<T> source, int limit)
+        {
+            yield return source.Current;
+            limit--;
+            for (int i = 0; i < limit && source.MoveNext(); i++)
+                yield return source.Current;
         }
     }
 }

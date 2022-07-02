@@ -4,6 +4,7 @@ using Hero.Core.Commons;
 using Hero.Core.Interfaces;
 using Hero.IoC;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CI.Seeder
@@ -29,16 +30,18 @@ namespace CI.Seeder
         {
             var createBy = GetType().Name;
 
-            MeetingEvent meetingEvent;
             var bll = life.GetInstance<MeetingEvents>();
             string meetName;
             DateTime date = DateTime.Now,
                 date2 = date.AddHours(1);
 
+            ICollection<MeetingEvent> colMeets = new HashSet<MeetingEvent>();
+
             for (var n = 1; n < 30; n++)
             {
                 meetName = n.ToString().PadLeft(4, '0');
-                meetingEvent = new MeetingEvent
+
+                colMeets.Add(new MeetingEvent
                 {
                     Name = $"ME-{meetName}",
                     Description = $"Meeting event - {meetName}",
@@ -50,15 +53,16 @@ namespace CI.Seeder
                     ModifyBy = createBy,
                     CreateDate = DateTime.Now,
                     ModifyDate = DateTime.Now,
-                };
-
-                if (!await bll.Exists(meetName).ConfigureAwait(false))
-                {
-                    await bll.Add(meetingEvent).ConfigureAwait(false);
-                }
+                });
             }
 
-            await bll.Commit().ConfigureAwait(false);
+            if (await bll.AddSeeds(colMeets) > 0)
+            {
+
+                await bll.Commit().ConfigureAwait(false);
+            }
+
+            colMeets.Clear();
         }
     }
 }
