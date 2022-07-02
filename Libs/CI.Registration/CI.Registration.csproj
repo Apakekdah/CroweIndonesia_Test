@@ -16,6 +16,7 @@
     <ProjectReference Include="..\CI.JWT\CI.JWT.csproj" />
     <ProjectReference Include="..\CI.Mappers\CI.Mappers.csproj" />
     <ProjectReference Include="..\Data\CI.Data.Business\CI.Data.Business.csproj" />
+    <ProjectReference Include="..\Data\CI.Seeder\CI.Seeder.csproj" />
     <ProjectReference Include="..\Data\EF\CI.Data.EF.MongoDB\CI.Data.EF.MongoDB.csproj" />
   </ItemGroup>
 

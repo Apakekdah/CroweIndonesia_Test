@@ -39,6 +39,7 @@ namespace CI
                     typeof(Mappers.BootstrapMapper).Assembly,
                     typeof(API.Handlers.BootstrapApiHandlers).Assembly,
                     typeof(Mappers.BootstrapJWT).Assembly,
+                    typeof(Seeder.BootstrapSeeder).Assembly,
                 };
 
             builder.RegisterAllBootstrapLoaderBuilder(registerAsms);

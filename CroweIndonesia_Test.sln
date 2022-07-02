@@ -44,7 +44,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Data.EF.MongoDB", "Libs\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Interface.Model", "Libs\CI.Interface.Model\CI.Interface.Model.csproj", "{F5A7D7AE-0B8A-4C82-AAF0-6F0C9C375C61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CI.Attributes", "Libs\CI.Attributes\CI.Attributes.csproj", "{E48C0F8D-4A34-4779-8DDD-96EBAA006ACF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CI.Attributes", "Libs\CI.Attributes\CI.Attributes.csproj", "{E48C0F8D-4A34-4779-8DDD-96EBAA006ACF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CI.Seeder", "Libs\Data\CI.Seeder\CI.Seeder.csproj", "{D87EA836-D9F2-44EF-AB27-7C29DD7E9D01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -116,6 +118,10 @@ Global
 		{E48C0F8D-4A34-4779-8DDD-96EBAA006ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E48C0F8D-4A34-4779-8DDD-96EBAA006ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E48C0F8D-4A34-4779-8DDD-96EBAA006ACF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D87EA836-D9F2-44EF-AB27-7C29DD7E9D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D87EA836-D9F2-44EF-AB27-7C29DD7E9D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D87EA836-D9F2-44EF-AB27-7C29DD7E9D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D87EA836-D9F2-44EF-AB27-7C29DD7E9D01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +144,7 @@ Global
 		{E4D71CF5-2497-4148-86D5-1B42A96D2712} = {4B394E78-E1BF-452C-9243-F76C388C720F}
 		{F5A7D7AE-0B8A-4C82-AAF0-6F0C9C375C61} = {88AB34E6-CB0C-4EDA-906A-CF7B640EBF59}
 		{E48C0F8D-4A34-4779-8DDD-96EBAA006ACF} = {88AB34E6-CB0C-4EDA-906A-CF7B640EBF59}
+		{D87EA836-D9F2-44EF-AB27-7C29DD7E9D01} = {94C96507-96B5-4235-959A-C9DD73ACE6F0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F46D623D-D5F9-4AC7-8697-D1597ED75204}
