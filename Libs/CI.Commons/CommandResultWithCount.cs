@@ -24,14 +24,14 @@ namespace CI.Commons
 
         public int RowCount { get; set; }
 
-        public static explicit operator CommandResultWithCount<T>(CommandResult<T> result)
-        {
-            if (result.GetType().IsAssignableFrom(typeof(ICommandResultWithCount<T>)))
-            {
-                return (CommandResultWithCount<T>)result;
-            }
+        //public static explicit operator CommandResultWithCount<T>(CommandResult<T> result)
+        //{
+        //    if (result.GetType().IsAssignableFrom(typeof(ICommandResultWithCount<T>)))
+        //    {
+        //        return (CommandResultWithCount<T>)result;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
     }
 }

@@ -1,4 +1,6 @@
-﻿using Hero.IoC;
+﻿using Hero.Cache;
+using Hero.Core.Interfaces;
+using Hero.IoC;
 using Hero.IoC.Autofac;
 using Hero.IoC.Autofac.LoggerModule;
 using Hero.Logger;
@@ -45,6 +47,8 @@ namespace CI
             builder.RegisterAllBootstrapLoaderBuilder(registerAsms);
 
             builder.Register<RI.ISecurityContext, RS.HttpSecurityContext>(ScopeIoC.Lifetime);
+
+            builder.Register<ICache, InMemoryCache>(ScopeIoC.Singleton);
         }
     }
 }

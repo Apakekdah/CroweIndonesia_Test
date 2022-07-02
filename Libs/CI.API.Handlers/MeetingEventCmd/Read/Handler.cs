@@ -32,10 +32,10 @@ namespace CI.API.Handlers.MeetingEventCmd.Read
             //    throw new NullReferenceException("Can't found active user in session");
             //}
 
-            if (command.PageSize < 1)
-                command.PageSize = Extensions.DefaultPageSize;
-            if (command.Page < 1)
-                command.Page = 1;
+            //if (command.PageSize < 1)
+            //    command.PageSize = Extensions.DefaultPageSize;
+            //if (command.Page < 1)
+            //    command.Page = 1;
 
             return Task.FromResult(true);
         }
@@ -60,7 +60,7 @@ namespace CI.API.Handlers.MeetingEventCmd.Read
                 switch (command.CommandProcessor)
                 {
                     case Commands.CommandProcessor.GetAll:
-                        meetingEvents = await bll.GetMeetingEventPaging(command.Page, command.PageSize);
+                        meetingEvents = await bll.GetAllLimit();
                         break;
                     case Commands.CommandProcessor.GetOne:
                         meetingEvent = await bll.GetByMeetingEventID(command.Id);

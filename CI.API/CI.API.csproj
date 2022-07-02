@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Libs\CI.Commands\CI.Commands.csproj" />
     <ProjectReference Include="..\Libs\CI.Commons\CI.Commons.csproj" />
+    <ProjectReference Include="..\Libs\CI.Controllers\CI.Controllers.csproj" />
     <ProjectReference Include="..\Libs\CI.Model\CI.Model.csproj" />
     <ProjectReference Include="..\Libs\CI.Registration\CI.Registration.csproj" />
   </ItemGroup>

@@ -1,5 +1,4 @@
-﻿using CI.Interface;
-using Hero;
+﻿using Hero;
 using Hero.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Ride;
@@ -8,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CI
 {
@@ -20,7 +21,7 @@ namespace CI
             if (result.IsNull())
                 return new NoContentResult();
 
-            ICommandResultWithCount<T> resultCount = result;
+            //ICommandResultWithCount<T> resultCount = result;
 
             ////CIJsonResult jsonResult = CIJsonResult.ParseFromCommandResult<T>((ICommandResultWithCount<T>)result);
             var json = result.ToJson();
@@ -58,6 +59,13 @@ namespace CI
             limit--;
             for (int i = 0; i < limit && source.MoveNext(); i++)
                 yield return source.Current;
+        }
+
+        public static Task<ICommandResult<TResult>> PaginatorInvoker<TInvoker, TCommand, TResult>(this TInvoker invoker, TCommand command, CancellationToken cancellation)
+            where TInvoker : ICommandInvoker<TCommand, TResult>
+            where TCommand : ICommand
+        {
+            return invoker.Invoke(command, cancellation);
         }
     }
 }

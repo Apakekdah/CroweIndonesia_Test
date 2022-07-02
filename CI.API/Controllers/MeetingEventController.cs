@@ -14,7 +14,7 @@ namespace CI.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     //[Microsoft.AspNetCore.Authorization.Authorize]
-    public class MeetingEventController : ControllerBase
+    public class MeetingEventController : BasePaginatorController
     {
         private readonly IDisposableIoC life;
         private readonly IMappingObject map;
@@ -77,7 +77,9 @@ namespace CI.API.Controllers
                 PageSize = domain.PageSize
             })
             {
-                return (await invoker.Invoke(cmd, cancellation)).ToContentJson();
+                //invoker.PaginatorInvoker<(cmd, cancellation);
+                return await CreatePaginationInvoker<ICommandInvoker<MeetingEventCommandRA, IEnumerable<MeetingEvent>>, MeetingEventCommandRA, MeetingEvent>(invoker, cmd, cancellation);
+                //return (await invoker.Invoke(cmd, cancellation)).ToContentJson();
             }
         }
     }

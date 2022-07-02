@@ -39,6 +39,8 @@ namespace CI.API
                       opt.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
                   });
 
+            services.AddSession();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Crowe Indonesia API", Version = "v1" });
@@ -61,6 +63,8 @@ namespace CI.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             //app.UseEndpoints(endpoints =>
             //{

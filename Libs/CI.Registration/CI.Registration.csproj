@@ -21,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Hero.Cache">
+      <HintPath>..\..\_Libs\Hero.Cache.dll</HintPath>
+    </Reference>
     <Reference Include="Hero.Core">
       <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
     </Reference>

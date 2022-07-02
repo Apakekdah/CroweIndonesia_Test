@@ -28,6 +28,11 @@ namespace CI.Data.Business.Repositories
             });
         }
 
+        public Task<IEnumerable<MeetingEvent>> GetAllLimit()
+        {
+            return Task.Run(() => GetQuery().Take(1000).ToArray().AsEnumerable());
+        }
+
         public async Task<int> AddSeeds(IEnumerable<MeetingEvent> meetingEvents)
         {
             int numberOfRows = 0;
