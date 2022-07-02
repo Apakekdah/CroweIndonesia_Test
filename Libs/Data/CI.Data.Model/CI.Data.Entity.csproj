@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CI.Interface.Model\CI.Interface.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Ride.Attributes">
+      <HintPath>..\..\..\_Libs\Ride.Attributes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

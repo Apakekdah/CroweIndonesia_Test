@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.19" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Xml" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.19" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CI.API.Handlers\CI.API.Handlers.csproj" />
+    <ProjectReference Include="..\CI.JWT\CI.JWT.csproj" />
+    <ProjectReference Include="..\CI.Mappers\CI.Mappers.csproj" />
+    <ProjectReference Include="..\Data\CI.Data.Business\CI.Data.Business.csproj" />
+    <ProjectReference Include="..\Data\EF\CI.Data.EF.MongoDB\CI.Data.EF.MongoDB.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hero.Core">
+      <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC">
+      <HintPath>..\..\_Libs\Hero.IoC.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC.Autofac">
+      <HintPath>..\..\_Libs\Hero.IoC.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC.Autofac.DI">
+      <HintPath>..\..\_Libs\Hero.IoC.Autofac.DI.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC.Autofac.LoggerModule">
+      <HintPath>..\..\_Libs\Hero.IoC.Autofac.LoggerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC.Autofac.Modular">
+      <HintPath>..\..\_Libs\Hero.IoC.Autofac.Modular.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.Logger">
+      <HintPath>..\..\_Libs\Hero.Logger.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Interfaces">
+      <HintPath>..\..\_Libs\Ride.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Security">
+      <HintPath>..\..\_Libs\Ride.Security.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

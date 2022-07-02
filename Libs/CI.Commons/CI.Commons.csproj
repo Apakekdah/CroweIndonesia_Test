@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hero.Core">
+      <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Commons">
+      <HintPath>..\..\_Libs\Ride.Commons.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

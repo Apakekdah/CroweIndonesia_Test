@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.19" />
+    <PackageReference Include="MongoDB.Driver" Version="2.15.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CI.Data.Model\CI.Data.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hero.Core">
+      <HintPath>..\..\..\..\_Libs\Hero.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC">
+      <HintPath>..\..\..\..\_Libs\Hero.IoC.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Attributes">
+      <HintPath>..\..\..\..\_Libs\Ride.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Commons">
+      <HintPath>..\..\..\..\_Libs\Ride.Commons.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

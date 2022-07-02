@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CI.Attributes\CI.Attributes.csproj" />
+    <ProjectReference Include="..\Data\CI.Data.Model\CI.Data.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hero.Core">
+      <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Attributes">
+      <HintPath>..\..\_Libs\Ride.Attributes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

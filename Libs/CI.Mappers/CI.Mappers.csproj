@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CI.Commands\CI.Commands.csproj" />
+    <ProjectReference Include="..\CI.MapperRegistration\CI.MapperRegistration.csproj" />
+    <ProjectReference Include="..\CI.Model\CI.Model.csproj" />
+    <ProjectReference Include="..\Data\CI.Data.Model\CI.Data.Entity.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hero.Core">
+      <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC">
+      <HintPath>..\..\_Libs\Hero.IoC.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Interfaces">
+      <HintPath>..\..\_Libs\Ride.Interfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

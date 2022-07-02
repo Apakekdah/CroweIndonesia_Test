@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.19" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.19" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.17.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CI.Commands\CI.Commands.csproj" />
+    <ProjectReference Include="..\CI.Interface\CI.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Hero.Core">
+      <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC">
+      <HintPath>..\..\_Libs\Hero.IoC.dll</HintPath>
+    </Reference>
+    <Reference Include="Hero.IoC.DI">
+      <HintPath>..\..\_Libs\Hero.IoC.DI.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Commons">
+      <HintPath>..\..\_Libs\Ride.Commons.dll</HintPath>
+    </Reference>
+    <Reference Include="Ride.Interfaces">
+      <HintPath>..\..\_Libs\Ride.Interfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
