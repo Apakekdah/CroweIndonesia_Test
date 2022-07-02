@@ -8,4 +8,10 @@
     <ProjectReference Include="..\CI.Model\CI.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Hero.Core">
+      <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

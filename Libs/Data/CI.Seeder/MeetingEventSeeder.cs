@@ -32,8 +32,9 @@ namespace CI.Seeder
 
             var bll = life.GetInstance<MeetingEvents>();
             string meetName;
-            DateTime date = DateTime.Now,
-                date2 = date.AddHours(1);
+            DateTime now = DateTime.Now,
+                date = now.Date,
+                date2 = date;
 
             ICollection<MeetingEvent> colMeets = new HashSet<MeetingEvent>();
 
@@ -54,6 +55,9 @@ namespace CI.Seeder
                     CreateDate = DateTime.Now,
                     ModifyDate = DateTime.Now,
                 });
+
+                date.AddDays(n);
+                date2.AddDays(n + 1);
             }
 
             if (await bll.AddSeeds(colMeets) > 0)

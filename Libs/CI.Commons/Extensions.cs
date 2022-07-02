@@ -1,4 +1,5 @@
-﻿using Hero;
+﻿using CI.Interface;
+using Hero;
 using Hero.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Ride;
@@ -19,6 +20,9 @@ namespace CI
             if (result.IsNull())
                 return new NoContentResult();
 
+            ICommandResultWithCount<T> resultCount = result;
+
+            ////CIJsonResult jsonResult = CIJsonResult.ParseFromCommandResult<T>((ICommandResultWithCount<T>)result);
             var json = result.ToJson();
             result.Dispose();
             return new ContentResult

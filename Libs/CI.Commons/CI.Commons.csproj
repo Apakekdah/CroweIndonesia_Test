@@ -10,6 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CI.Interface\CI.Interface.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Hero.Core">
       <HintPath>..\..\_Libs\Hero.Core.dll</HintPath>
     </Reference>
