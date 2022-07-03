@@ -1,3 +1,4 @@
+using CI.API.OPFilters;
 using CI.Registration.MW;
 using Hero.IoC;
 using Microsoft.AspNetCore.Builder;
@@ -45,6 +46,56 @@ namespace CI.API
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Crowe Indonesia API", Version = "v1" });
                 c.ResolveConflictingActions(x => x.First());
+
+                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Token",
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer",
+                    //Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
+                    //{
+                    //    ClientCredentials = new Microsoft.OpenApi.Models.OpenApiOAuthFlow
+                    //    {
+                    //        TokenUrl = new Uri("http://localhost:5000/connect/token"),
+                    //        //Scopes = new Dictionary<string, string>
+                    //        //{
+                    //        //    { "api", "API" }
+                    //        //}
+                    //    }
+                    //}
+                });
+
+                //c.AddSecurityDefinition("oauth2", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                //{
+                //    Type = Microsoft.OpenApi.Models.SecuritySchemeType.OAuth2,
+                //    Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
+                //    {
+                //        ClientCredentials = new Microsoft.OpenApi.Models.OpenApiOAuthFlow
+                //        {
+                //            TokenUrl = new Uri("http://localhost:5000/api/oauth"),
+                //        }
+                //    }
+                //});
+
+                c.OperationFilter<AuthorizeOPFilter>();
+
+                //c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+                //{
+                //    {
+                //        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                //        {
+                //            Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                //            {
+                //                Type = Microsoft.OpenApi.Models.ReferenceType.Schema,
+                //                Id = "Bearer"
+                //            },
+                //        },
+                //        new List<string>()
+                //    }
+                //});
             });
         }
 

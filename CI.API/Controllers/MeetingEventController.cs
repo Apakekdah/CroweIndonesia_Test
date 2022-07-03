@@ -13,7 +13,7 @@ namespace CI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Microsoft.AspNetCore.Authorization.Authorize]
+    [Microsoft.AspNetCore.Authorization.Authorize]
     public class MeetingEventController : BasePaginatorController
     {
         private readonly IDisposableIoC life;

@@ -1,11 +1,11 @@
 ﻿#undef USE_SESSION
 
+using CI.Interface;
 using Hero;
 using Hero.Core.Commons;
 using Hero.Core.Interfaces;
 using Hero.IoC;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -18,10 +18,6 @@ namespace CI
 {
     public class BasePaginatorController : ControllerBase
     {
-        protected const string PAGE_NAME = "Page";
-        protected const string PAGE_SIZE_NAME = "PageSize";
-        protected const string PAGE_RESET_NAME = "Reset";
-
         public BasePaginatorController() : this(Extensions.DefaultPageSize) { }
         public BasePaginatorController(int defaultPageSize)
         {
@@ -34,74 +30,62 @@ namespace CI
             where TInvoker : ICommandInvoker<TCommand, IEnumerable<TResult>>
             where TCommand : ICommand
         {
-            var query = Request.Query;
-
-
-            int page, pageSize;
-            bool reset;
-
-            if (query.TryGetValue(PAGE_NAME, out StringValues sValue))
-            {
-                int.TryParse(sValue.ToString(), out page);
-            }
-            else
-            {
-                page = 1;
-            }
-
-            if (query.TryGetValue(PAGE_SIZE_NAME, out sValue))
-            {
-                int.TryParse(sValue.ToString(), out pageSize);
-            }
-            else
-            {
-                pageSize = DefaultPageSize;
-            }
-
-            if (query.TryGetValue(PAGE_RESET_NAME, out sValue))
-            {
-                reset = Regex.IsMatch(sValue, "\\b(yes|on|true|1)\\b", RegexOptions.IgnoreCase | RegexOptions.Multiline);
-            }
-            else
-            {
-                reset = true;
-            }
+            PaginationHelper pagination = new PaginationHelper();
 
             ICommandResult<IEnumerable<TResult>> commandResult = null;
             ICache cache = null;
             string key = null;
+            int start = 0;
 
-            int start = ((page < 1) ? 0 : page - 1) * pageSize;
-#if USE_SESSION
-            if (HttpContext.Session != null)
-#endif
+            if (await TryUpdateModelAsync(pagination))
             {
-#if USE_SESSION
-                key = string.Concat(invoker.Name, "-", HttpContext.Session.Id);
-#else
-                key = invoker.Name;
-#endif
-                var life = HttpContext.RequestServices.GetService(typeof(IDisposableIoC)) as IDisposableIoC;
-                if (!life.IsNull())
-                {
-                    if (life.IsRegistered<ICache>())
-                    {
-                        cache = life.GetInstance<ICache>();
-                        IDictionary<string, (string key, string value)> dictionary = new ConcurrentDictionary<string, (string key, string value)>();
+                if (pagination.Page == 0)
+                    pagination.Page = 1;
 
-                        if (reset)
+                if (pagination.PageSize == 0)
+                    pagination.PageSize = DefaultPageSize;
+
+#if USE_SESSION
+                if ((HttpContext.Session != null) && !pagination.IsReset)
+#else
+                if (!pagination.IsReset)
+#endif
+                {
+#if USE_SESSION
+                    key = string.Concat(invoker.Name, "-", HttpContext.Session.Id);
+#else
+                    key = invoker.Name;
+#endif
+                    var life = HttpContext.RequestServices.GetService(typeof(IDisposableIoC)) as IDisposableIoC;
+                    if (!life.IsNull())
+                    {
+                        if (life.IsRegistered<ICache>())
                         {
-                            await cache.Remove(key);
-                        }
-                        else
-                        {
-                            commandResult = (await cache.Get(key)) as ICommandResult<IEnumerable<TResult>>;
+                            cache = life.GetInstance<ICache>();
+                            IDictionary<string, (string key, string value)> dictionary = new ConcurrentDictionary<string, (string key, string value)>();
+
+                            if (pagination.IsReset)
+                            {
+                                await cache.Remove(key);
+                            }
+                            else
+                            {
+                                commandResult = (await cache.Get(key)) as ICommandResult<IEnumerable<TResult>>;
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                pagination.Page = 1;
+                pagination.PageSize = Extensions.DefaultPageSize;
+                pagination.Reset = bool.TrueString;
+            }
 
-            if (commandResult.IsNull() || reset)
+            start = ((pagination.Page < 1) ? 0 : pagination.Page - 1) * pagination.PageSize;
+
+            if (commandResult.IsNull() || pagination.IsReset)
             {
                 commandResult = await invoker.Invoke(command, cancellation);
 
@@ -115,12 +99,20 @@ namespace CI
             {
                 if (commandResult.Success && commandResult.Result.Any())
                 {
-                    var paging = commandResult.Result.Skip(start).Take(pageSize).ToArray().AsEnumerable();
+                    var paging = commandResult.Result.Skip(start).Take(pagination.PageSize).ToArray().AsEnumerable();
                     commandResult = new CommandResult<IEnumerable<TResult>>(true, paging);
                 }
             }
 
             return commandResult.ToContentJson();
         }
+    }
+
+    class PaginationHelper : IPaginator
+    {
+        public int Page { get; set; }
+        public int PageSize { get; set; }
+        public string Reset { get; set; } = bool.TrueString;
+        public bool IsReset => (Reset.IsNullOrEmptyOrWhitespace() ? false : Regex.IsMatch(Reset, "\\b(yes|on|true|1)\\b", RegexOptions.IgnoreCase | RegexOptions.Multiline));
     }
 }

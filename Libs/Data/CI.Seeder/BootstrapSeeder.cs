@@ -8,7 +8,14 @@ namespace CI.Seeder
     {
         public Task Run(IBuilderIoC container)
         {
-            container.RegisterAsImplement<MeetingEventSeeder>();
+            //container.RegisterAsImplement<MeetingEventSeeder>();
+            //container.reg
+
+            var asm = typeof(FakeClass).Assembly;
+            container.RegisterAssemblyTypes(RegistrationTypeIoC.AsImplement,
+                new[] { typeof(IAutoStartService) }, ScopeIoC.Lifetime,
+                new[] { asm });
+
 
             return Task.FromResult(0);
         }
