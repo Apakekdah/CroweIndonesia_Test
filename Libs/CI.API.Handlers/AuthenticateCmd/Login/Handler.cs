@@ -34,7 +34,7 @@ namespace CI.API.Handlers.AuthenticateCmd.Login
                 var userEntity = await bll.GetById(command.User);
 
                 if (userEntity.IsNull())
-                    throw new Exception($"User '{command.User}'");
+                    throw new Exception($"User '{command.User}' not exists");
                 else if (!userEntity.IsActive)
                     throw new Exception($"User '{command.User}' not active");
                 else if (!command.Password.Equals(userEntity.Password))

@@ -87,6 +87,10 @@ namespace CI.API
                     {
                         opt.DisableStringReuse = true;
                         opt.Limits.KeepAliveTimeout = time;
+                        opt.ConfigureEndpointDefaults(epConfig =>
+                        {
+
+                        });
                     });
                 })
                 .ConfigureLogging(logger =>

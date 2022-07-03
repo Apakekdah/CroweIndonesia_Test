@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CI.API
@@ -47,38 +49,45 @@ namespace CI.API
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Crowe Indonesia API", Version = "v1" });
                 c.ResolveConflictingActions(x => x.First());
 
-                c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-                {
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Description = "Token",
-                    Name = "Authorization",
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    Scheme = "bearer",
-                    //Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
-                    //{
-                    //    ClientCredentials = new Microsoft.OpenApi.Models.OpenApiOAuthFlow
-                    //    {
-                    //        TokenUrl = new Uri("http://localhost:5000/connect/token"),
-                    //        //Scopes = new Dictionary<string, string>
-                    //        //{
-                    //        //    { "api", "API" }
-                    //        //}
-                    //    }
-                    //}
-                });
-
-                //c.AddSecurityDefinition("oauth2", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                //c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 //{
-                //    Type = Microsoft.OpenApi.Models.SecuritySchemeType.OAuth2,
-                //    Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
-                //    {
-                //        ClientCredentials = new Microsoft.OpenApi.Models.OpenApiOAuthFlow
-                //        {
-                //            TokenUrl = new Uri("http://localhost:5000/api/oauth"),
-                //        }
-                //    }
+                //    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                //    Description = "Token",
+                //    Name = "Authorization",
+                //    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                //    BearerFormat = "JWT",
+                //    Scheme = "bearer",
+                //    //Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
+                //    //{
+                //    //    ClientCredentials = new Microsoft.OpenApi.Models.OpenApiOAuthFlow
+                //    //    {
+                //    //        TokenUrl = new Uri("http://localhost:5000/connect/token"),
+                //    //        //Scopes = new Dictionary<string, string>
+                //    //        //{
+                //    //        //    { "api", "API" }
+                //    //        //}
+                //    //    }
+                //    //}
                 //});
+
+                var identityUri = Configuration["identityServerHost"];
+                var tokenUrl = new Uri(new Uri(identityUri), "api/oauth");
+
+                c.AddSecurityDefinition("oauth2", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.OAuth2,
+                    Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
+                    {
+                        ClientCredentials = new Microsoft.OpenApi.Models.OpenApiOAuthFlow
+                        {
+                            TokenUrl = tokenUrl,
+                            Scopes = new Dictionary<string, string>
+                            {
+                                { "Atlas", "Atlas. Full Access" }
+                            }
+                        }
+                    }
+                });
 
                 c.OperationFilter<AuthorizeOPFilter>();
 

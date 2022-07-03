@@ -40,9 +40,21 @@ namespace CI.Seeder
             if (!await bll.Exists(user.UserID))
             {
                 await bll.Add(user);
-
-                await bll.Commit();
             }
+
+            user = new User
+            {
+                UserID = "Atlas",
+                Name = "Atlas",
+                Password = "secret",
+                IsActive = true
+            };
+            if (!await bll.Exists(user.UserID))
+            {
+                await bll.Add(user);
+            }
+
+            await bll.Commit();
         }
     }
 }
