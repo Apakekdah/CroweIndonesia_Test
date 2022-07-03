@@ -75,6 +75,7 @@ namespace CI.API
 
                 c.AddSecurityDefinition("oauth2", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
                     Type = Microsoft.OpenApi.Models.SecuritySchemeType.OAuth2,
                     Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
                     {
@@ -83,7 +84,8 @@ namespace CI.API
                             TokenUrl = tokenUrl,
                             Scopes = new Dictionary<string, string>
                             {
-                                { "Atlas", "Atlas. Full Access" }
+                                { "Atlas", "Atlas. Full Access" },
+                                { "Somplak", "Somplak" },
                             }
                         }
                     }

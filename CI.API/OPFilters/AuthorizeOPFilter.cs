@@ -27,13 +27,13 @@ namespace CI.API.OPFilters
                                 Reference = new OpenApiReference
                                 {
                                     Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                    //Id = "oauth2"
+                                    //Id = "Bearer"
+                                    Id = "oauth2"
                                 }
                             },
                             new List<string>
                             {
-                                //"api"
+                                "Atlas"
                             }
                         }
                     }

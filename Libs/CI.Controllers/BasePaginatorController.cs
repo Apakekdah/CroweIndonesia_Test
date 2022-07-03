@@ -54,7 +54,7 @@ namespace CI
 #if USE_SESSION
                     key = string.Concat(invoker.Name, "-", HttpContext.Session.Id);
 #else
-                    key = invoker.Name;
+                    key = string.Concat(invoker.Name, "-", User.GetActiveUser());
 #endif
                     var life = HttpContext.RequestServices.GetService(typeof(IDisposableIoC)) as IDisposableIoC;
                     if (!life.IsNull())
@@ -112,7 +112,7 @@ namespace CI
     {
         public int Page { get; set; }
         public int PageSize { get; set; }
-        public string Reset { get; set; } = bool.TrueString;
+        public string Reset { get; set; }
         public bool IsReset => (Reset.IsNullOrEmptyOrWhitespace() ? false : Regex.IsMatch(Reset, "\\b(yes|on|true|1)\\b", RegexOptions.IgnoreCase | RegexOptions.Multiline));
     }
 }

@@ -25,6 +25,12 @@ namespace CI.API.Controllers
             map = life.GetInstance<IMappingObject>();
         }
 
+        [HttpPost("authorize")]
+        public async Task<IActionResult> Authorize(CancellationToken cancellation)
+        {
+            return Ok();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(CancellationToken cancellation)
         {
@@ -33,7 +39,8 @@ namespace CI.API.Controllers
             {
                 return BadRequest();
             }
-            var scope = Request.Headers["scope"];
+            OAuthForm oForm = new OAuthForm();
+            await TryUpdateModelAsync(oForm);
             OAuthFake oauth = null;
             var splits = authValue.ToString().Split(' ', 2, System.StringSplitOptions.RemoveEmptyEntries);
             if (splits.Length == 2)
@@ -57,9 +64,9 @@ namespace CI.API.Controllers
                             var expIn = result.Result.ExpiredAt ?? now.AddDays(1);
 
                             oauth = new OAuthFake();
-                            oauth.refresh_token = oauth.access_token = result.Result.Token;
+                            oauth.access_token = result.Result.Token;
                             oauth.expires_in = (int)(expIn - now).TotalSeconds;
-                            oauth.scope = scope;
+                            oauth.scope = oForm.scope ?? "";
                         }
                         else
                         {
@@ -85,7 +92,13 @@ namespace CI.API.Controllers
         public string access_token { get; set; }
         public string token_type { get; set; } = "Bearer";
         public int expires_in { get; set; }
-        public string refresh_token { get; set; }
+        //public string refresh_token { get; set; }
+        public string scope { get; set; }
+    }
+
+    class OAuthForm
+    {
+        public string grant_type { get; set; }
         public string scope { get; set; }
     }
 }
