@@ -14,11 +14,11 @@ namespace CI.Commands.API
 
         [Required]
         [DateValidator(0)]
-        [DateRange("EndDate", false)]
+        [DateRange("EndDate")]
         public DateTime StartDate { get; set; }
         [Required]
         [DateValidator(0)]
-        [DateRange("StartDate", false, false)]
+        [DateRange("StartDate", false)]
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
 

@@ -78,7 +78,7 @@ namespace CI.API.Handlers.MeetingEventCmd.CU
                 }
 
                 meetingEvent.Name = command.Name;
-                meetingEvent.Description = command.Description;
+                meetingEvent.Description = command.Description ?? command.Name;
                 meetingEvent.StartDate = command.StartDate;
                 meetingEvent.EndDate = command.EndDate;
 

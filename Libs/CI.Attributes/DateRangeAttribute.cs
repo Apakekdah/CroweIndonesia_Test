@@ -11,13 +11,12 @@ namespace CI.Attributes
         private const string DefaultMessageLowest = "Property '{0}' cannot be lowest than property '{1}'";
 
         private readonly string dependencyProperty;
-        private readonly bool allowNull;
         private readonly bool lowestValidation;
 
-        public DateRangeAttribute(string dependencyProperty, bool allowNull)
-        : this(dependencyProperty, allowNull, false) { }
+        public DateRangeAttribute(string dependencyProperty)
+        : this(dependencyProperty, true) { }
 
-        public DateRangeAttribute(string dependencyProperty, bool allowNull, bool lowestValidation)
+        public DateRangeAttribute(string dependencyProperty, bool lowestValidation)
         {
             if (dependencyProperty.IsNullOrEmptyOrWhitespace())
             {
@@ -25,7 +24,6 @@ namespace CI.Attributes
             }
 
             this.dependencyProperty = dependencyProperty;
-            this.allowNull = allowNull;
             this.lowestValidation = lowestValidation;
         }
 
@@ -35,43 +33,53 @@ namespace CI.Attributes
             if (dependencyProperty.IsNullOrEmptyOrWhitespace())
                 return vr;
 
-            Type dt = typeof(DateTime);
+            if (value.IsNull())
+            {
+                vr = new ValidationResult($"Property {validationContext.DisplayName} value cannot be null.", new[] { validationContext.MemberName });
+                return vr;
+            }
 
-            if (value == null)
+            var dt = typeof(DateTime);
+            var dateFrom = (DateTime)value;
+
+            var prop = validationContext.ObjectType.GetProperty(validationContext.DisplayName);
+            if (prop.IsNull())
+            {
+                vr = new ValidationResult($"Property {validationContext.DisplayName} not found in {validationContext.ObjectType.Name}", new[] { validationContext.MemberName });
+            }
+            else if (value.IsNull())
             {
                 vr = new ValidationResult($"The {validationContext.MemberName} is Required", new[] { validationContext.MemberName });
             }
-            else if (validationContext.ObjectType != dt)
+            else if (prop.PropertyType != dt)
             {
                 vr = new ValidationResult($"Member of {validationContext.MemberName} is not valid type of DateTime");
             }
             else
             {
-                var prop = validationContext.ObjectType.GetProperty(dependencyProperty, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetProperty);
-                if (prop == null)
+                prop = validationContext.ObjectType.GetProperty(dependencyProperty, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetProperty);
+                if (prop.IsNull())
                 {
-                    vr = new ValidationResult($"Failed to get relation property '{dependencyProperty}' from object '{validationContext.MemberName}'");
+                    vr = new ValidationResult($"Failed to get relation property '{dependencyProperty}' from object '{validationContext.ObjectType.Name}'");
+                }
+                else if (prop.PropertyType != dt)
+                {
+                    vr = new ValidationResult($"Member of relation {dependencyProperty} is not valid type of DateTime");
                 }
                 else
                 {
-                    var obj = prop.GetValue(validationContext.ObjectInstance);
-                    if (obj == null)
+                    var dateTo = (DateTime)prop.GetValue(validationContext.ObjectInstance);
+                    if (lowestValidation)
                     {
-
+                        if (dateFrom > dateTo)
+                        {
+                            vr = new ValidationResult(string.Format(DefaultMessageLowest, validationContext.MemberName, dependencyProperty), new[] { validationContext.MemberName, dependencyProperty });
+                        }
                     }
-                    //if (typeof(obj) != typeof(DateTime))
-                    //    DateTime dt = ((DateTime)value);
-                    //if (dt < minDate)
-                    //{
-                    //    if (errMsg.IsNullOrEmptyOrWhitespace())
-                    //    {
-                    //        vr = new ValidationResult(string.Format(DefaultMessage, validationContext.MemberName, dt, minDate), new[] { validationContext.MemberName });
-                    //    }
-                    //    else
-                    //    {
-                    //        vr = new ValidationResult(errMsg, new[] { validationContext.MemberName });
-                    //    }
-                    //}
+                    else if (dateFrom < dateTo)
+                    {
+                        vr = new ValidationResult(string.Format(DefaultMessageGreater, validationContext.MemberName, dependencyProperty), new[] { validationContext.MemberName, dependencyProperty });
+                    }
                 }
             }
             return vr;

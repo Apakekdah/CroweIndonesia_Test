@@ -27,26 +27,38 @@ namespace CI.JWT
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenKey = Encoding.UTF8.GetBytes(jwtCfg.Key);
+            var expireIn = DateTime.UtcNow.AddMinutes(jwtCfg.ExpiredMinutes);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(GetClaims(authenticate.User, properties)),
-                Expires = DateTime.UtcNow.AddMinutes(jwtCfg.ExpiredMinutes),
+                Expires = expireIn,
+                Subject = new ClaimsIdentity(GetClaims(authenticate.User, authenticate.Roles, expireIn, properties)),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenValue = tokenHandler.WriteToken(token);
+
             return new AuthenticateResponse
             {
                 User = authenticate.User,
                 CreateAt = DateTime.UtcNow,
                 ExpiredAt = tokenDescriptor.Expires,
-                Token = tokenHandler.WriteToken(token)
+                Token = tokenValue
             };
         }
 
-        private IEnumerable<Claim> GetClaims(string userName, IDictionary<string, string> properties)
+        private IEnumerable<Claim> GetClaims(string userName, IEnumerable<string> roles, DateTime expireIn, IDictionary<string, string> properties)
         {
             yield return new Claim(ClaimTypes.Name, userName);
+            yield return new Claim(ClaimTypes.Expiration, expireIn.ToString(), typeof(DateTime).Name);
+
+            if (!roles.IsNullOrEmpty())
+            {
+                foreach (var role in roles)
+                {
+                    yield return new Claim(ClaimTypes.Role, role);
+                }
+            }
 
             if (!properties.IsNull())
             {

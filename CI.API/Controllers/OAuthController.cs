@@ -5,6 +5,7 @@ using Hero.IoC;
 using Microsoft.AspNetCore.Mvc;
 using Ride.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -14,6 +15,7 @@ namespace CI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class OAuthController : ControllerBase
     {
         private readonly IDisposableIoC life;
@@ -50,11 +52,14 @@ namespace CI.API.Controllers
                 var userInfo = fromBase64.Split(':', 2, StringSplitOptions.RemoveEmptyEntries);
                 if (userInfo.Length == 2)
                 {
+                    IEnumerable<string> roles = (oForm.scope ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
                     var invoker = life.GetInstance<ICommandInvoker<AuthenticateCommand, AuthenticateResponse>>();
                     using (var cmd = new AuthenticateCommand
                     {
                         User = WebUtility.UrlDecode(userInfo[0]),
-                        Password = WebUtility.UrlDecode(userInfo[1])
+                        Password = WebUtility.UrlDecode(userInfo[1]),
+                        Roles = roles
                     })
                     {
                         var result = (await invoker.Invoke(cmd, cancellation));

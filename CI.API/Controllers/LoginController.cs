@@ -11,6 +11,7 @@ namespace CI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class LoginController
     {
         private readonly IDisposableIoC life;

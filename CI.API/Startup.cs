@@ -85,7 +85,7 @@ namespace CI.API
                             Scopes = new Dictionary<string, string>
                             {
                                 { "Atlas", "Atlas. Full Access" },
-                                { "Somplak", "Somplak" },
+                                { "Weather", "Forecase wheather" }
                             }
                         }
                     }

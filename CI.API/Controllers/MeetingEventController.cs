@@ -13,7 +13,7 @@ namespace CI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Atlas")]
     public class MeetingEventController : BasePaginatorController
     {
         private readonly IDisposableIoC life;
@@ -68,18 +68,10 @@ namespace CI.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(CancellationToken cancellation)
         {
-            var domain = new MeetingEventDomain();
-            await TryUpdateModelAsync(domain);
             var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandRA, IEnumerable<MeetingEvent>>>();
-            using (var cmd = new MeetingEventCommandRA()
+            using (var cmd = new MeetingEventCommandRA())
             {
-                Page = domain.Page,
-                PageSize = domain.PageSize
-            })
-            {
-                //invoker.PaginatorInvoker<(cmd, cancellation);
                 return await CreatePaginationInvoker<ICommandInvoker<MeetingEventCommandRA, IEnumerable<MeetingEvent>>, MeetingEventCommandRA, MeetingEvent>(invoker, cmd, cancellation);
-                //return (await invoker.Invoke(cmd, cancellation)).ToContentJson();
             }
         }
     }

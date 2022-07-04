@@ -70,7 +70,8 @@ namespace CI.API.Handlers.AuthenticateCmd.Login
                 return login.Login(new Model.Models.AuthenticateUser
                 {
                     User = command.User,
-                    Password = command.Password
+                    Password = command.Password,
+                    Roles = command.Roles
                 }, new Dictionary<string, string>());
             }
         }
