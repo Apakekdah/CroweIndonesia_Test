@@ -37,12 +37,15 @@ namespace CI.API.Handlers.MeetingEventCmd.Read
             //if (command.Page < 1)
             //    command.Page = 1;
 
+            if ((command.CommandProcessor == Commands.CommandProcessor.GetOne) && command.Id.IsNullOrEmpty())
+                throw new ArgumentException("Value id is required");
+
             return Task.FromResult(true);
         }
 
         public override async Task<IEnumerable<Model.Models.MeetingEvent>> Execute(MeetingEventCommandRA command, CancellationToken cancellation)
         {
-            var activeUser = User.GetActiveUser();
+            //var activeUser = User.GetActiveUser();
 
             using (var scope = life.New)
             {

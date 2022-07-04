@@ -1,4 +1,5 @@
 ﻿using CI.Commands.API;
+using CI.Model.Models;
 using Ride.Handlers.Handlers;
 using System;
 
@@ -26,7 +27,7 @@ namespace CI.API.Handlers.MeetingEventCmd.CU
 
             protected override string DefaultName => name;
 
-            public override CommandHandlerBase<MeetingEventCommandCU, bool> Build()
+            public override CommandHandlerBase<MeetingEventCommandCU, MeetingEvent> Build()
             {
                 return factory(GetConfig());
             }

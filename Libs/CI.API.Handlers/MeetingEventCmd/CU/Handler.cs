@@ -4,20 +4,23 @@ using CI.Data.Entity;
 using Hero;
 using Hero.IoC;
 using Ride.Handlers.Handlers;
+using Ride.Interfaces;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CI.API.Handlers.MeetingEventCmd.CU
 {
-    public partial class Handler : CommandHandlerBase<MeetingEventCommandCU, bool>
+    public partial class Handler : CommandHandlerBase<MeetingEventCommandCU, Model.Models.MeetingEvent>
     {
         private readonly IDisposableIoC life;
+        private readonly IMappingObject map;
 
         public Handler(Config config) :
             base(config)
         {
             life = config.Life;
+            map = life.GetInstance<IMappingObject>();
         }
 
         public override Task<bool> Validate(MeetingEventCommandCU command)
@@ -38,7 +41,7 @@ namespace CI.API.Handlers.MeetingEventCmd.CU
             return Task.FromResult(true);
         }
 
-        public override async Task<bool> Execute(MeetingEventCommandCU command, CancellationToken cancellation)
+        public override async Task<Model.Models.MeetingEvent> Execute(MeetingEventCommandCU command, CancellationToken cancellation)
         {
             var activeUser = User.GetActiveUser();
 
@@ -62,7 +65,8 @@ namespace CI.API.Handlers.MeetingEventCmd.CU
                     case Commands.CommandProcessor.Add:
                         meetingEvent = new MeetingEvent()
                         {
-                            Id = Guid.NewGuid().ToString()
+                            Id = Guid.NewGuid().ToString(),
+                            IsActive = true
                         };
                         break;
                     case Commands.CommandProcessor.Edit:
@@ -81,6 +85,7 @@ namespace CI.API.Handlers.MeetingEventCmd.CU
                 meetingEvent.Description = command.Description ?? command.Name;
                 meetingEvent.StartDate = command.StartDate;
                 meetingEvent.EndDate = command.EndDate;
+                meetingEvent.IsActive = command.IsActive;
 
                 if (command.CommandProcessor == Commands.CommandProcessor.Add)
                 {
@@ -104,9 +109,10 @@ namespace CI.API.Handlers.MeetingEventCmd.CU
                 var changes = await bll.Commit();
 
                 if (changes > 0)
-                    return true;
-
-                return false;
+                {
+                    return map.Get<Model.Models.MeetingEvent>(meetingEvent);
+                }
+                return null;
             }
         }
     }

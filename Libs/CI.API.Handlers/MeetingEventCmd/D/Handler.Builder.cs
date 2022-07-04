@@ -26,7 +26,7 @@ namespace CI.API.Handlers.MeetingEventCmd.D
 
             protected override string DefaultName => name;
 
-            public override CommandHandlerBase<TenderCommandD, bool> Build()
+            public override CommandHandlerBase<MeetingEventCommandD, bool> Build()
             {
                 return factory(GetConfig());
             }

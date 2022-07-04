@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CI.API.Handlers.MeetingEventCmd.D
 {
-    public partial class Handler : CommandHandlerBase<TenderCommandD, bool>
+    public partial class Handler : CommandHandlerBase<MeetingEventCommandD, bool>
     {
         private readonly IDisposableIoC life;
         private readonly IMappingObject map;
@@ -23,7 +23,7 @@ namespace CI.API.Handlers.MeetingEventCmd.D
             map = life.GetInstance<IMappingObject>();
         }
 
-        public override Task<bool> Validate(TenderCommandD command)
+        public override Task<bool> Validate(MeetingEventCommandD command)
         {
             //var user = User.GetActiveUser();
             //if (user.IsNullOrEmptyOrWhitespace())
@@ -33,9 +33,9 @@ namespace CI.API.Handlers.MeetingEventCmd.D
             return Task.FromResult(true);
         }
 
-        public override async Task<bool> Execute(TenderCommandD command, CancellationToken cancellation)
+        public override async Task<bool> Execute(MeetingEventCommandD command, CancellationToken cancellation)
         {
-            var activeUser = User.GetActiveUser();
+            //var activeUser = User.GetActiveUser();
 
             using (var scope = life.New)
             {
@@ -47,14 +47,20 @@ namespace CI.API.Handlers.MeetingEventCmd.D
 
                 var bll = scope.GetInstance<MeetingEvents>();
 
-                MeetingEvent meetinEvent = await bll.GetByMeetingEventID(command.ID);
+                MeetingEvent meetingEvent = await bll.GetByMeetingEventID(command.Id);
 
-                if (meetinEvent.IsNull())
+                if (meetingEvent.IsNull())
                 {
-                    throw new Exception($"Failed to read data for '{command.CommandProcessor}' with Id '{command.ID}'");
+                    throw new Exception($"Failed to read data for '{command.CommandProcessor}' with Id '{command.Id}'");
+                }
+                else if (!meetingEvent.IsActive)
+                {
+                    throw new Exception($"Meeting Id '{command.Id}' already mark as an inactive");
                 }
 
-                await bll.Delete(meetinEvent);
+                meetingEvent.IsActive = false;
+
+                await bll.Update(meetingEvent);
 
                 var changes = await bll.Commit();
 

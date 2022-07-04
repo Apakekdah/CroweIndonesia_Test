@@ -7,8 +7,8 @@ namespace CI.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class DateRangeAttribute : ValidationAttribute
     {
-        private const string DefaultMessageGreater = "Property '{0}' cannot be greater than property '{1}'";
-        private const string DefaultMessageLowest = "Property '{0}' cannot be lowest than property '{1}'";
+        private const string DefaultMessageGreater = "Value '{0}' cannot be greater than value '{1}'";
+        private const string DefaultMessageLowest = "Value '{0}' cannot be lower than value '{1}'";
 
         private readonly string dependencyProperty;
         private readonly bool lowestValidation;
@@ -53,18 +53,18 @@ namespace CI.Attributes
             }
             else if (prop.PropertyType != dt)
             {
-                vr = new ValidationResult($"Member of {validationContext.MemberName} is not valid type of DateTime");
+                vr = new ValidationResult($"Member of {validationContext.MemberName} is not valid type of DateTime", new[] { validationContext.MemberName });
             }
             else
             {
                 prop = validationContext.ObjectType.GetProperty(dependencyProperty, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.GetProperty);
                 if (prop.IsNull())
                 {
-                    vr = new ValidationResult($"Failed to get relation property '{dependencyProperty}' from object '{validationContext.ObjectType.Name}'");
+                    vr = new ValidationResult($"Failed to get relation property '{dependencyProperty}' from object '{validationContext.ObjectType.Name}'", new[] { dependencyProperty });
                 }
                 else if (prop.PropertyType != dt)
                 {
-                    vr = new ValidationResult($"Member of relation {dependencyProperty} is not valid type of DateTime");
+                    vr = new ValidationResult($"Member of relation {dependencyProperty} is not valid type of DateTime", new[] { dependencyProperty });
                 }
                 else
                 {
@@ -73,12 +73,12 @@ namespace CI.Attributes
                     {
                         if (dateFrom > dateTo)
                         {
-                            vr = new ValidationResult(string.Format(DefaultMessageLowest, validationContext.MemberName, dependencyProperty), new[] { validationContext.MemberName, dependencyProperty });
+                            vr = new ValidationResult(string.Format(DefaultMessageLowest, dependencyProperty, validationContext.MemberName), new[] { dependencyProperty });
                         }
                     }
                     else if (dateFrom < dateTo)
                     {
-                        vr = new ValidationResult(string.Format(DefaultMessageGreater, validationContext.MemberName, dependencyProperty), new[] { validationContext.MemberName, dependencyProperty });
+                        vr = new ValidationResult(string.Format(DefaultMessageGreater, dependencyProperty, validationContext.MemberName), new[] { validationContext.MemberName });
                     }
                 }
             }

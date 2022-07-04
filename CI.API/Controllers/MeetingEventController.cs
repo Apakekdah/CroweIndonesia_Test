@@ -28,7 +28,7 @@ namespace CI.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(MeetingEventDomain model, CancellationToken cancellation)
         {
-            var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandCU, bool>>();
+            var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandCU, MeetingEvent>>();
             using (var cmd = map.Get<MeetingEventCommandCU>(model, (src, dest) => dest.CommandProcessor = Commands.CommandProcessor.Add))
             {
                 return (await invoker.Invoke(cmd, cancellation)).ToContentJson();
@@ -38,7 +38,7 @@ namespace CI.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(MeetingEventDomain model, CancellationToken cancellation)
         {
-            var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandCU, bool>>();
+            var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandCU, MeetingEvent>>();
             using (var cmd = map.Get<MeetingEventCommandCU>(model, (src, dest) => dest.CommandProcessor = Commands.CommandProcessor.Edit))
             {
                 return (await invoker.Invoke(cmd, cancellation)).ToContentJson();
@@ -66,7 +66,7 @@ namespace CI.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll(CancellationToken cancellation)
+        public async Task<IActionResult> GetAll([FromQuery] int page, [FromQuery] int pageSize, CancellationToken cancellation)
         {
             var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandRA, IEnumerable<MeetingEvent>>>();
             using (var cmd = new MeetingEventCommandRA())

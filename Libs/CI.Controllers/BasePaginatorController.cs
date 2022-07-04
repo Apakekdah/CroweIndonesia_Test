@@ -7,7 +7,6 @@ using Hero.Core.Interfaces;
 using Hero.IoC;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -62,7 +61,6 @@ namespace CI
                         if (life.IsRegistered<ICache>())
                         {
                             cache = life.GetInstance<ICache>();
-                            IDictionary<string, (string key, string value)> dictionary = new ConcurrentDictionary<string, (string key, string value)>();
 
                             if (pagination.IsReset)
                             {
