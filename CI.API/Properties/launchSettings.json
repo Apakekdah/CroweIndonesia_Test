@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:54321",
+      "applicationUrl": "http://localhost:12312",
       "sslPort": 0
     }
   },
@@ -18,13 +18,13 @@
       }
     },
     "CI.API": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "ci-sdk/index.html",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "applicationUrl": "http://localhost:54321"
+        "commandName": "Project",
+        "launchBrowser": true,
+        "launchUrl": "ci-sdk/index.html",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        },
+        "applicationUrl": "http://localhost:12312"
     },
     "Docker": {
       "commandName": "Docker",

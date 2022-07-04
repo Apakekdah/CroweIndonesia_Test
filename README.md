@@ -15,3 +15,6 @@ sudo docker save croweindo/api -o ./ci_api.tar
 
 # Docker Import/Load
 sudo docker load < ci_api.tar
+
+# Security
+using topology Identityserver is OAuth2 fake with JWT

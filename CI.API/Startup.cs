@@ -49,6 +49,7 @@ namespace CI.API
 
                 var identityUri = Configuration["identityServerHost"];
                 var tokenUrl = new Uri(new Uri(identityUri), "api/oauth");
+                //var oauthUrl = new Uri("../api/oauth", UriKind.Relative);
 
                 c.AddSecurityDefinition("oauth2", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
                 {
