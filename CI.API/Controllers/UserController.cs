@@ -11,6 +11,7 @@ namespace CI.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Atlas,Admin")]
     public class UserController
     {
         private readonly IDisposableIoC life;

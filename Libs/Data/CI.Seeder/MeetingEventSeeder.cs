@@ -44,6 +44,7 @@ namespace CI.Seeder
 
                 colMeets.Add(new MeetingEvent
                 {
+                    Id = Guid.NewGuid().ToString(),
                     Name = $"ME-{meetName}",
                     Description = $"Meeting event - {meetName}",
                     StartDate = date,

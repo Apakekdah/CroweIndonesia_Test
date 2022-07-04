@@ -26,15 +26,13 @@ namespace CI.Seeder
 
         public async Task DoWork()
         {
-            var createBy = GetType().Name;
-
             var bll = life.GetInstance<Users>();
 
             User user = new User
             {
                 UserID = "Rudi",
                 Name = "Rudi",
-                Password = "123",
+                Password = "secret",
                 IsActive = true
             };
             if (!await bll.Exists(user.UserID))

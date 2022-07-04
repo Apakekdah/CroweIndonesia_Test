@@ -14,17 +14,15 @@ namespace CI
 {
     public static class Extensions
     {
-        public readonly static int DefaultPageSize = 20;
+        public const int DefaultPageSize = 20;
 
         public static IActionResult ToContentJson<T>(this ICommandResult<T> result)
         {
             if (result.IsNull())
                 return new NoContentResult();
 
-            //ICommandResultWithCount<T> resultCount = result;
-
-            ////CIJsonResult jsonResult = CIJsonResult.ParseFromCommandResult<T>((ICommandResultWithCount<T>)result);
-            var json = result.ToJson();
+            CIResponse response = CIResponse.ParseFromCommandResult(result);
+            var json = response.ToJson();
             result.Dispose();
             return new ContentResult
             {

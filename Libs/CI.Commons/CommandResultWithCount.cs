@@ -18,20 +18,14 @@ namespace CI.Commons
         {
         }
 
-        public CommandResultWithCount(bool isSuccess, T result) : base(isSuccess, result)
+        public CommandResultWithCount(bool isSuccess, T result, int totalRow) : base(isSuccess, result)
         {
+            RowCount = totalRow;
         }
 
         public int RowCount { get; set; }
-
-        //public static explicit operator CommandResultWithCount<T>(CommandResult<T> result)
-        //{
-        //    if (result.GetType().IsAssignableFrom(typeof(ICommandResultWithCount<T>)))
-        //    {
-        //        return (CommandResultWithCount<T>)result;
-        //    }
-
-        //    return null;
-        //}
+        public string Query { get; set; }
+        public int Page { get; set; }
+        public int PageSize { get; set; }
     }
 }

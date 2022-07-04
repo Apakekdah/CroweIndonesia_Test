@@ -5,7 +5,6 @@ namespace CI.Model.Domain
 {
     public class MeetingEventDomain : IBaseModelCreate
     {
-        public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
@@ -13,6 +12,6 @@ namespace CI.Model.Domain
         public bool IsActive { get; set; } = true;
 
         public string CreateBy { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; } = DateTime.Now;
     }
 }

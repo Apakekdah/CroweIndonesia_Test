@@ -31,7 +31,7 @@ namespace CI.API.OPFilters
                                     Id = "oauth2"
                                 }
                             },
-                            new string[] { "Atlas", "Weather" }
+                            new string[] { "Atlas", "Weather", "Admin" }
                         }
                     }
                 };

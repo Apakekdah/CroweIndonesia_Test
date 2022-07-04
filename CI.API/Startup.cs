@@ -49,27 +49,6 @@ namespace CI.API
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Crowe Indonesia API", Version = "v1" });
                 c.ResolveConflictingActions(x => x.First());
 
-                //c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-                //{
-                //    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                //    Description = "Token",
-                //    Name = "Authorization",
-                //    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-                //    BearerFormat = "JWT",
-                //    Scheme = "bearer",
-                //    //Flows = new Microsoft.OpenApi.Models.OpenApiOAuthFlows
-                //    //{
-                //    //    ClientCredentials = new Microsoft.OpenApi.Models.OpenApiOAuthFlow
-                //    //    {
-                //    //        TokenUrl = new Uri("http://localhost:5000/connect/token"),
-                //    //        //Scopes = new Dictionary<string, string>
-                //    //        //{
-                //    //        //    { "api", "API" }
-                //    //        //}
-                //    //    }
-                //    //}
-                //});
-
                 var identityUri = Configuration["identityServerHost"];
                 var tokenUrl = new Uri(new Uri(identityUri), "api/oauth");
 
@@ -85,28 +64,14 @@ namespace CI.API
                             Scopes = new Dictionary<string, string>
                             {
                                 { "Atlas", "Atlas. Full Access" },
-                                { "Weather", "Forecase wheather" }
+                                { "Weather", "Forecase wheather" },
+                                { "Admin", "Adminstration controller" }
                             }
                         }
                     }
                 });
 
                 c.OperationFilter<AuthorizeOPFilter>();
-
-                //c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-                //{
-                //    {
-                //        new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-                //        {
-                //            Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                //            {
-                //                Type = Microsoft.OpenApi.Models.ReferenceType.Schema,
-                //                Id = "Bearer"
-                //            },
-                //        },
-                //        new List<string>()
-                //    }
-                //});
             });
         }
 
@@ -128,11 +93,6 @@ namespace CI.API
 
             app.UseSession();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
-
             app.UseStaticFiles();
 
             app.UseSwagger();
@@ -146,8 +106,6 @@ namespace CI.API
 
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapControllers();
-
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -156,18 +114,6 @@ namespace CI.API
                     name: "api_default",
                     pattern: "api/{controller=WeatherForecast}/{action=Get}/{id?}");
             });
-
-            //var defaults = new DefaultFilesOptions().DefaultFileNames.Select(p => "/" + p);
-            //app.Use(async (context, next) =>
-            //{
-            //    var path = context.Request.Path;
-            //    if ((path == "/") || defaults.Any(p => p.Equals(path, System.StringComparison.InvariantCultureIgnoreCase)))
-            //    {
-            //        context.Response.Redirect("/Home");
-            //        return;
-            //    }
-            //    await next();
-            //});
         }
 
         public void ConfigureContainer(IBuilderIoC builder)

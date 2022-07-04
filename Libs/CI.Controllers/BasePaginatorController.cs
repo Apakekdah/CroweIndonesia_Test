@@ -1,8 +1,8 @@
 ﻿#undef USE_SESSION
 
+using CI.Commons;
 using CI.Interface;
 using Hero;
-using Hero.Core.Commons;
 using Hero.Core.Interfaces;
 using Hero.IoC;
 using Microsoft.AspNetCore.Mvc;
@@ -98,7 +98,11 @@ namespace CI
                 if (commandResult.Success && commandResult.Result.Any())
                 {
                     var paging = commandResult.Result.Skip(start).Take(pagination.PageSize).ToArray().AsEnumerable();
-                    commandResult = new CommandResult<IEnumerable<TResult>>(true, paging);
+                    commandResult = new CommandResultWithCount<IEnumerable<TResult>>(true, paging, commandResult.Result.Count())
+                    {
+                        Page = pagination.Page,
+                        PageSize = pagination.PageSize
+                    };
                 }
             }
 

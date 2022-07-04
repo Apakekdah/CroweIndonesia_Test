@@ -3,12 +3,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace CI.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Atlas,Weather")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

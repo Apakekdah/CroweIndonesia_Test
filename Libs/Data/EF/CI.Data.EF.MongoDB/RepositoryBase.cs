@@ -1,12 +1,12 @@
-﻿using Hero;
+﻿using CI.Data.EF.MongoDB.Interfaces;
+using CI.Data.EF.MongoDB.Models;
+using Hero;
 using Hero.Core.Commons;
 using Hero.Core.Interfaces;
 using Hero.IoC;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using CI.Data.EF.MongoDB.Interfaces;
-using CI.Data.EF.MongoDB.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -186,10 +186,11 @@ namespace CI.Data.EF.MongoDB
 
             return Task.Run(() => DataContext.AddCommand(() =>
             {
+                var regExId = new BsonRegularExpression($"/{id}/i");
                 if (session == null)
-                    return dbset.DeleteOneAsync(Builders<T>.Filter.Eq(primarys, id));
+                    return dbset.DeleteOneAsync(Builders<T>.Filter.Regex(primarys, regExId));
                 else
-                    return dbset.DeleteOneAsync(session, Builders<T>.Filter.Eq(primarys, id));
+                    return dbset.DeleteOneAsync(session, Builders<T>.Filter.Regex(primarys, regExId));
             }));
         }
 
@@ -210,7 +211,8 @@ namespace CI.Data.EF.MongoDB
         {
             RefreshTransaction();
 
-            using var cursor = await dbset.FindAsync(Builders<T>.Filter.Eq(primarys, id), new FindOptions<T>
+            var regExId = new BsonRegularExpression($"/{id}/i");
+            using var cursor = await dbset.FindAsync(Builders<T>.Filter.Regex(primarys, regExId), new FindOptions<T>
             {
                 BatchSize = 1,
                 //ReturnKey = true
@@ -248,7 +250,8 @@ namespace CI.Data.EF.MongoDB
         {
             RefreshTransaction();
 
-            using var cursor = await dbset.FindAsync(Builders<T>.Filter.Eq(primarys, id), new FindOptions<T>()
+            var regExId = new BsonRegularExpression($"/{id}/i");
+            using var cursor = await dbset.FindAsync(Builders<T>.Filter.Regex(primarys, regExId), new FindOptions<T>()
             {
                 BatchSize = 1,
                 Limit = 1,

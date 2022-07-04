@@ -36,10 +36,14 @@ namespace CI.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(MeetingEventDomain model, CancellationToken cancellation)
+        public async Task<IActionResult> Update(string id, MeetingEventDomain model, CancellationToken cancellation)
         {
             var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandCU, MeetingEvent>>();
-            using (var cmd = map.Get<MeetingEventCommandCU>(model, (src, dest) => dest.CommandProcessor = Commands.CommandProcessor.Edit))
+            using (var cmd = map.Get<MeetingEventCommandCU>(model, (src, dest) =>
+            {
+                dest.CommandProcessor = Commands.CommandProcessor.Edit;
+                dest.Id = id;
+            }))
             {
                 return (await invoker.Invoke(cmd, cancellation)).ToContentJson();
             }
@@ -58,7 +62,7 @@ namespace CI.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id, CancellationToken cancellation)
         {
-            var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandRA, IEnumerable<MeetingEventDomain>>>();
+            var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandRA, IEnumerable<MeetingEvent>>>();
             using (var cmd = new MeetingEventCommandRA { CommandProcessor = Commands.CommandProcessor.GetOne, Id = id })
             {
                 return (await invoker.Invoke(cmd, cancellation)).ToContentJson();
@@ -66,7 +70,7 @@ namespace CI.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] int page, [FromQuery] int pageSize, CancellationToken cancellation)
+        public async Task<IActionResult> GetAll(CancellationToken cancellation, [FromQuery] int page = 1, [FromQuery] int pageSize = Extensions.DefaultPageSize)
         {
             var invoker = life.GetInstance<ICommandInvoker<MeetingEventCommandRA, IEnumerable<MeetingEvent>>>();
             using (var cmd = new MeetingEventCommandRA())
