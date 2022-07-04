@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Ride;
 using System;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace CI.Mappers
         {
             container.RegisterAsImplement<UserAuthorization>();
 
-            var pathFile = "appsettings.json";
+            var pathFile = PathLocation.ConfigurationLocation.PathJoin("appsettings.json");
             var builder = new ConfigurationBuilder()
               .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
               .AddJsonFile(pathFile, optional: true, reloadOnChange: true);

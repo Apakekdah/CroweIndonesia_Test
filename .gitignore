@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # Our libs
 !*/_Libs/*
+**ci_api.tar

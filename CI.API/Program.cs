@@ -19,7 +19,7 @@ namespace CI.API
             Hero.HeroSerializer.SetSerializer(Hero.Core.Serializer.TextJson.TJJson.Create(true));
             Hero.HeroSerializer.SetBinarySerializer(Hero.Core.Serializer.TextJson.TJBinary.Create());
 
-            RideLogFactory.InitLog("nlog.config");
+            RideLogFactory.InitLog(PathLocation.ConfigurationLocation.PathJoin("nlog.config"));
 
             Log = RideLogFactory.GetLogger<Program>();
 
@@ -69,7 +69,7 @@ namespace CI.API
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true)
+                .AddJsonFile(PathLocation.ConfigurationLocation.PathJoin("appsettings.json"), optional: true)
                 .AddEnvironmentVariables("CI_")
                 .AddCommandLine(args)
                 .Build();

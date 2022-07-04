@@ -2,6 +2,7 @@
 using CI.Model.Models;
 using Hero.Core.Interfaces;
 using Hero.IoC;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Ride.Interfaces;
 using System;
@@ -16,6 +17,7 @@ namespace CI.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
+    [EnableCors]
     public class OAuthController : ControllerBase
     {
         private readonly IDisposableIoC life;
@@ -28,10 +30,6 @@ namespace CI.API.Controllers
         }
 
         [HttpPost("authorize")]
-        public async Task<IActionResult> Authorize(CancellationToken cancellation)
-        {
-            return Ok();
-        }
 
         [HttpPost]
         public async Task<IActionResult> Login(CancellationToken cancellation)
