@@ -18,3 +18,6 @@ sudo docker load < ci_api.tar
 
 # Security
 using topology Identityserver is OAuth2 fake with JWT
+
+
+Gak lulus dong
